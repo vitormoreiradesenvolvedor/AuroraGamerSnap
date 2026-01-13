@@ -29,9 +29,8 @@ jobs:
         with:
           recipe: ${{ matrix.recipe }}
           cosign_private_key: ${{ secrets.SIGNING_SECRET }}
+          # O arquivo cosign.pub deve estar na raiz do repo
           registry_token: ${{ github.token }}
-          pr_event_number: ${{ github.event.number }}
-          # Ativa a geração da ISO após o build da imagem
           maximize_build_space: true
           generate_iso: true
           upload_privileged: true
