@@ -1,12 +1,12 @@
 name: bluebuild
 on:
   schedule:
-    - cron: "00 17 * * *" # Constrói todo dia às 17:00 UTC
+    - cron: "00 17 * * *"
   push:
-    paths-ignore: # Não reconstrói se mudar apenas documentação
+    paths-ignore:
       - "**.md"
   pull_request:
-  workflow_dispatch: # Permite apertar um botão para rodar manualmente
+  workflow_dispatch:
 
 jobs:
   bluebuild:
@@ -14,6 +14,7 @@ jobs:
     uses: blue-build/github-action/.github/workflows/reusable-build.yml@v1.8
     with:
       recipe: recipe.yml
-      cosign_private_key: ${{ secrets.SIGNING_SECRET }}
-      registry_token: ${{ secrets.GITHUB_TOKEN }}
       pr_event_number: ${{ github.event.number }}
+    secrets:
+      signing_secret: ${{ secrets.SIGNING_SECRET }}
+      registry_token: ${{ secrets.GITHUB_TOKEN }}
