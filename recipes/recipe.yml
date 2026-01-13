@@ -7,7 +7,7 @@ image-version: stable
 modules:
   - type: script
     scripts:
-      - add-repos.sh # Script para importar a GPG da Mullvad
+      - add-repos.sh # Roda primeiro para garantir que o repo existe
 
   - type: rpm-ostree
     install:
@@ -17,7 +17,7 @@ modules:
       - fuse
 
   - type: kargs
-    kargs: # Propriedade obrigatória conforme o erro de validação
+    kargs: # Propriedade obrigatória no esquema v1
       - ssl.allow_unsafe_legacy_renegotiation=1
 
   - type: default-flatpaks
