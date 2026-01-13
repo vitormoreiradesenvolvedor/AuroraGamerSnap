@@ -1,20 +1,24 @@
-# recipes/recipe.yml
 # yaml-language-server: $schema=https://schema.blue-build.org/recipe-v1.json
-
 name: aurora-custom-rtx
-description: Aurora Linux com NVIDIA RTX, Snap, Mullvad, Slack e TLS 1.0 Legacy.
+description: Aurora Linux com NVIDIA RTX, Snap, Mullvad, Slack e TLS 1.0.
 base-image: ghcr.io/ublue-os/aurora-nvidia
 image-version: stable
 
 modules:
+  - type: script
+    scripts:
+      - add-repos.sh # Adiciona o repo e a chave GPG primeiro
+
   - type: rpm-ostree
-    repos:
-      - https://repository.mullvad.net/rpm/stable/x86_64/mullvad.repo
     install:
       - mullvad-vpn
       - snapd
       - crypto-policies-scripts
       - fuse
+
+  - type: kargs # Forma correta de adicionar parâmetros de kernel no build
+    append:
+      - ssl.allow_unsafe_legacy_renegotiation=1
 
   - type: default-flatpaks
     configurations:

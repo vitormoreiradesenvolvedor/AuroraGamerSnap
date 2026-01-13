@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
 set -oue pipefail
 
-echo "--- Ativando TLS 1.0 (Sistema e Kernel) ---"
+echo "--- Ativando TLS 1.0 (Sistema) ---"
 update-crypto-policies --set LEGACY
-rpm-ostree kargs --append="ssl.allow_unsafe_legacy_renegotiation=1"
 
-echo "--- Configurando Snap e Mullvad ---"
+echo "--- Configurando links simbólicos ---"
 systemctl enable snapd.socket
 ln -s /var/lib/snapd/snap /snap
 
