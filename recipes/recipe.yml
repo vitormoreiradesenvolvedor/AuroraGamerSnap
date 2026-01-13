@@ -16,11 +16,12 @@ modules:
       - crypto-policies-scripts
       - fuse
 
-  - type: default-flatpaks # Nome corrigido para o esquema v1
-    system: true           # Obrigatório para imagens Aurora/Bluefin
-    install:
-      - io.dbeaver.DBeaverCommunity
-      - com.slack.Slack
+  - type: default-flatpaks
+    configurations:
+      - system: true
+        install:
+          - io.dbeaver.DBeaverCommunity
+          - com.slack.Slack
 
   - type: script
     scripts:
