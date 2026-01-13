@@ -1,0 +1,36 @@
+# recipe.yml
+name: aurora-custom-dev
+description: "Minha imagem Aurora DX Nvidia com Legacy Crypto e Tools"
+base-image: ghcr.io/ublue-os/aurora-dx-nvidia
+image-version: latest
+
+modules:
+  - type: rpm-ostree
+    repos:
+      # Repositório oficial do Mullvad
+      - https://repository.mullvad.net/rpm/stable/mullvad.repo
+    install:
+      - mullvad-vpn
+      - snapd
+      # Dependências extras se necessárias para o script de jogos
+      - steam-devices
+
+  - type: files
+    files:
+      # Copia nosso script de pós-instalação para o sistema
+      - source: scripts/final-setup.sh
+        destination: /usr/bin/final-setup.sh
+      # Adiciona o comando ao menu do ujust
+      - source: files/just/60-custom.just
+        destination: /usr/share/ublue-os/just/60-custom.just
+
+  - type: systemd
+    system:
+      enabled:
+        - mullvad-daemon.service
+        - snapd.socket
+
+  - type: script
+    scripts:
+      # Script de build para configurações profundas do sistema (TLS)
+      - build-config.sh
