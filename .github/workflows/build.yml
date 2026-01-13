@@ -11,7 +11,7 @@ on:
 jobs:
   bluebuild:
     name: Build Custom Image
-    uses: blue-build/github-action/.github/workflows/build.yml@v1
+    uses: blue-build/github-action/.github/workflows/build.yml@v1.8
     with:
       recipe: recipe.yml
       pr_event_number: ${{ github.event.number }}
