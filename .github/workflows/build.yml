@@ -11,10 +11,9 @@ on:
 jobs:
   bluebuild:
     name: Build Custom Image
-    uses: blue-build/github-action/.github/workflows/reusable-build.yml@v1.8
+    uses: blue-build/github-action/.github/workflows/build.yml@v1
     with:
       recipe: recipe.yml
       pr_event_number: ${{ github.event.number }}
-    secrets:
-      cosign_private_key: ${{ secrets.SIGNING_SECRET }}
-      registry_token: ${{ secrets.GITHUB_TOKEN }}
+      # Removemos a tentativa manual de passar secrets aqui para evitar erros
+    secrets: inherit
