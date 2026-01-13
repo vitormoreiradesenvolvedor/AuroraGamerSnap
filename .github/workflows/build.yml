@@ -3,8 +3,10 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+
 jobs:
-  bluebuild:
+  build-image:
+    name: Build Custom Image
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -13,11 +15,39 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Build
+
+      - name: Build and Push Image
         uses: blue-build/github-action@v1.8
         with:
           recipe: recipe.yml
           cosign_private_key: ${{ secrets.SIGNING_SECRET }}
           registry_token: ${{ github.token }}
-          maximize_build_space: true
-          generate_iso: true
+          # Mantido pois é um input válido e essencial para imagens pesadas
+          maximize_build_space: true 
+
+  generate-iso:
+    name: Generate ISO
+    needs: build-image
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generate ISO
+        uses: blue-build/isogenerator@v1.x # Ação dedicada para ISO em 2026
+        with:
+          image_name: aurora-custom-rtx
+          image_tag: latest
+          variant: 'Aurora' # Opcional: define o nome na tela de boot
+          version: 43 # Ajuste para a versão do Fedora base que você usa
+
+      - name: Upload ISO Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: aurora-rtx-iso
+          path: ./*.iso
+          retention-days: 5
