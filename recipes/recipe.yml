@@ -1,19 +1,22 @@
-# recipe.yml
+# yaml-language-server: $schema=https://schema.blue-build.org/recipe-v1.json
 name: aurora-custom-rtx
 description: Aurora Linux DX com NVIDIA RTX, Snap, Mullvad e TLS 1.0.
-# Mudamos a base para dx para já vir com ferramentas de dev e grupos
+# Já inicia com a base de desenvolvedor para evitar o erro de rebase 403
 base-image: ghcr.io/ublue-os/aurora-dx-nvidia 
 image-version: stable
 
 modules:
+  - type: script
+    scripts:
+      - add-repos.sh
+
   - type: rpm-ostree
     install:
       - mullvad-vpn
       - snapd
       - crypto-policies-scripts
       - fuse
-      # Adicionamos bibliotecas necessárias para o RiseupVPN
-      - libappindicator-gtk3 
+      - libayatana-appindicator-gtk3 # Versão atualizada do libappindicator
 
   - type: kargs
     kargs:
