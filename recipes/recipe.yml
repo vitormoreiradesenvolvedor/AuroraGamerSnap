@@ -5,10 +5,6 @@ base-image: ghcr.io/ublue-os/aurora-nvidia
 image-version: stable
 
 modules:
-  - type: script
-    scripts:
-      - add-repos.sh # Configura o repositório Mullvad antes da instalação
-
   - type: rpm-ostree
     install:
       - mullvad-vpn
@@ -16,9 +12,9 @@ modules:
       - crypto-policies-scripts
       - fuse
 
-  - type: kargs
-    kargs: 
-      - ssl.allow_unsafe_legacy_renegotiation=1 # TLS 1.0 Legacy via Kernel
+  - type: kargs # Forma correta de adicionar kargs no BlueBuild
+    kargs:
+      - ssl.allow_unsafe_legacy_renegotiation=1
 
   - type: default-flatpaks
     configurations:
