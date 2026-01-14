@@ -1,22 +1,21 @@
 # recipe.yml
 name: aurora-custom-rtx
-description: Aurora Linux com NVIDIA RTX, Snap, Mullvad, Slack e TLS 1.0 Legacy.
-base-image: ghcr.io/ublue-os/aurora-nvidia
+description: Aurora Linux DX com NVIDIA RTX, Snap, Mullvad e TLS 1.0.
+# Mudamos a base para dx para já vir com ferramentas de dev e grupos
+base-image: ghcr.io/ublue-os/aurora-dx-nvidia 
 image-version: stable
 
 modules:
-  - type: script
-    scripts:
-      - add-repos.sh # Roda primeiro para configurar o repo
-
   - type: rpm-ostree
     install:
       - mullvad-vpn
       - snapd
       - crypto-policies-scripts
       - fuse
+      # Adicionamos bibliotecas necessárias para o RiseupVPN
+      - libappindicator-gtk3 
 
-  - type: kargs # Forma correta de adicionar argumentos de kernel
+  - type: kargs
     kargs:
       - ssl.allow_unsafe_legacy_renegotiation=1
 
