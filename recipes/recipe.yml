@@ -1,10 +1,14 @@
-# yaml-language-server: $schema=https://schema.blue-build.org/recipe-v1.json
+# recipe.yml
 name: aurora-custom-rtx
 description: Aurora Linux com NVIDIA RTX, Snap, Mullvad, Slack e TLS 1.0 Legacy.
 base-image: ghcr.io/ublue-os/aurora-nvidia
 image-version: stable
 
 modules:
+  - type: script
+    scripts:
+      - add-repos.sh # Roda primeiro para configurar o repo
+
   - type: rpm-ostree
     install:
       - mullvad-vpn
@@ -12,7 +16,7 @@ modules:
       - crypto-policies-scripts
       - fuse
 
-  - type: kargs # Forma correta de adicionar kargs no BlueBuild
+  - type: kargs # Forma correta de adicionar argumentos de kernel
     kargs:
       - ssl.allow_unsafe_legacy_renegotiation=1
 
